@@ -1,5 +1,5 @@
 package com.talentotech.redcomunitaria.model;
-
+//actualizar pearson
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
