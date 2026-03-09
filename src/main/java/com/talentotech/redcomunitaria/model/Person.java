@@ -1,10 +1,13 @@
 package com.talentotech.redcomunitaria.model;
-//actualizar pearson
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 
@@ -38,6 +41,14 @@ public class Person {
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Venture> ventures;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Innovation> innovations;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -112,6 +123,22 @@ public class Person {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<Venture> getVentures() {
+        return ventures;
+    }
+
+    public void setVentures(List<Venture> ventures) {
+        this.ventures = ventures;
+    }
+
+    public List<Innovation> getInnovations() {
+        return innovations;
+    }
+
+    public void setInnovations(List<Innovation> innovations) {
+        this.innovations = innovations;
     }
 
     public LocalDateTime getCreatedAt() {
