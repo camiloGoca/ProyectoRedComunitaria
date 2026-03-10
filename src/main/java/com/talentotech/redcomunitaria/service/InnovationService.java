@@ -10,7 +10,6 @@ import com.talentotech.redcomunitaria.model.Innovation;
 import com.talentotech.redcomunitaria.model.Location;
 import com.talentotech.redcomunitaria.model.Person;
 import com.talentotech.redcomunitaria.model.User;
-import com.talentotech.redcomunitaria.model.Venture;
 import com.talentotech.redcomunitaria.repository.InnovationRepository;
 import com.talentotech.redcomunitaria.repository.LocationRepository;
 import com.talentotech.redcomunitaria.repository.PersonRepository;

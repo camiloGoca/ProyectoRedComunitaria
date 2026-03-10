@@ -143,6 +143,10 @@ public class VentureService {
         return ventureRepository.findTotalProductionByRegionAndVentureType();
      }
 
+    public List<Object[]> getVenturePercentageByRegion() {
+    return ventureRepository.findVenturePercentageByRegion();
+     }
+
     public void delete(Long id) {
         Venture venture = ventureRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Emprendimiento no encontrado con ID: " + id));

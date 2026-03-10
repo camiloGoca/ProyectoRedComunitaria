@@ -37,12 +37,18 @@ public class VentureController {
         return ResponseEntity.ok(venture);
     }
 
-    //con este endpoint exponemos la consulta 
+    //con este endpoint exponemos la consulta  de produccion total
     @GetMapping("/statistics/production")
      public ResponseEntity<List<Object[]>> getTotalProductionByRegionAndVentureType() {
     List<Object[]> productionStats = ventureService.getTotalProductionByRegionAndVentureType();
         return ResponseEntity.ok(productionStats);
      }
+
+    @GetMapping("/statistics/venture-percentage")
+     public ResponseEntity<List<Object[]>> getVenturePercentageByRegion() {
+      List<Object[]> ventureStats = ventureService.getVenturePercentageByRegion();
+        return ResponseEntity.ok(ventureStats);
+    }
 
     @PutMapping("/{id}")
     public ResponseEntity<Venture> update(@PathVariable Long id, @RequestBody Venture ventureDetails) {
