@@ -16,7 +16,6 @@ import com.talentotech.redcomunitaria.repository.LocationRepository;
 import com.talentotech.redcomunitaria.repository.UserRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
 
 @Service
 public class VentureService {
