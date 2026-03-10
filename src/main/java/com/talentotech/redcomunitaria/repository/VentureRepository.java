@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.talentotech.redcomunitaria.model.Venture;
+import org.springframework.data.domain.Pageable;
+
 
 public interface VentureRepository extends JpaRepository<Venture, Long> {
 
@@ -19,6 +21,14 @@ public interface VentureRepository extends JpaRepository<Venture, Long> {
            "FROM Venture v " +
            "GROUP BY v.location.region")
      List<Object[]> findVenturePercentageByRegion();
+
+     // Consulta para obtener los 10 países con mayor emprendimiento
+    @Query("SELECT l.country, COUNT(v) AS ventureCount " +
+           "FROM Venture v " +
+           "JOIN v.location l " +
+           "GROUP BY l.country " +
+           "ORDER BY ventureCount DESC")
+    List<Object[]> findTopCountriesByVentureCount(Pageable pageable);
 
 
     List<Venture> findByLocation_Region(String region);

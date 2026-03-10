@@ -14,6 +14,9 @@ import com.talentotech.redcomunitaria.repository.VentureRepository;
 import com.talentotech.redcomunitaria.repository.PersonRepository;
 import com.talentotech.redcomunitaria.repository.LocationRepository;
 import com.talentotech.redcomunitaria.repository.UserRepository;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
 @Service
 public class VentureService {
@@ -144,12 +147,18 @@ public class VentureService {
      }
 
     public List<Object[]> getVenturePercentageByRegion() {
-    return ventureRepository.findVenturePercentageByRegion();
+        return ventureRepository.findVenturePercentageByRegion();
      }
+
+    public List<Object[]> getTopCountriesByVentureCount() {
+        Pageable pageable = PageRequest.of(0, 10);  // Pagina 0, 10 resultados
+        return ventureRepository.findTopCountriesByVentureCount(pageable);
+    }
 
     public void delete(Long id) {
         Venture venture = ventureRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Emprendimiento no encontrado con ID: " + id));
         ventureRepository.delete(venture);
     }
-}
+  }
+

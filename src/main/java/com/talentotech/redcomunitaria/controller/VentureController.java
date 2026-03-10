@@ -63,6 +63,12 @@ public class VentureController {
             @RequestParam(required = false) String region) {
         return ventureService.filterVentures(status, ventureType, region);
     }
+
+    @GetMapping("/statistics/top-countries")
+    public ResponseEntity<List<Object[]>> getTopCountriesByVentureCount() {
+        List<Object[]> topCountries = ventureService.getTopCountriesByVentureCount();
+        return ResponseEntity.ok(topCountries);
+    }
     
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
