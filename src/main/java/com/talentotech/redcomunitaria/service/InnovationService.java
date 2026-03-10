@@ -10,6 +10,7 @@ import com.talentotech.redcomunitaria.model.Innovation;
 import com.talentotech.redcomunitaria.model.Location;
 import com.talentotech.redcomunitaria.model.Person;
 import com.talentotech.redcomunitaria.model.User;
+import com.talentotech.redcomunitaria.model.Venture;
 import com.talentotech.redcomunitaria.repository.InnovationRepository;
 import com.talentotech.redcomunitaria.repository.LocationRepository;
 import com.talentotech.redcomunitaria.repository.PersonRepository;
@@ -117,5 +118,11 @@ public class InnovationService {
 
     public List<Innovation> findByInnovationLevel(String innovationLevel) {
         return innovationRepository.findByInnovationLevel(innovationLevel);
+    }
+
+    public void delete(Long id) {
+        Innovation innovation = innovationRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Innovacion no encontrado con ID: " + id));
+        innovationRepository.delete(innovation);
     }
 }

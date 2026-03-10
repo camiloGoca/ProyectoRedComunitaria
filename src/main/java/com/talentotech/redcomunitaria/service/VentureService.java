@@ -114,6 +114,10 @@ public class VentureService {
             venture.setMonthlyIncome(ventureDetails.getMonthlyIncome());
         }
 
+        if (ventureDetails.getTotalProduction() != null) {
+            venture.setTotalProduction(ventureDetails.getTotalProduction());
+        }
+
         if (ventureDetails.getPerson() != null && ventureDetails.getPerson().getId() != null) {
             Person person = personRepository.findById(ventureDetails.getPerson().getId())
                     .orElseThrow(() -> new ResourceNotFoundException("Persona no encontrada"));
@@ -134,6 +138,10 @@ public class VentureService {
 
         return ventureRepository.save(venture);
     }
+
+    public List<Object[]> getTotalProductionByRegionAndVentureType() {
+        return ventureRepository.findTotalProductionByRegionAndVentureType();
+     }
 
     public void delete(Long id) {
         Venture venture = ventureRepository.findById(id)

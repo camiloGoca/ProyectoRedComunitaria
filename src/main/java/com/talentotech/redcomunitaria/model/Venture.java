@@ -35,6 +35,9 @@ public class Venture {
     @Column
     private Integer employees;
 
+    @Column(name = "total_production")
+    private BigDecimal totalProduction;
+
     @Column(name = "monthly_income", precision = 14, scale = 2)
     private BigDecimal monthlyIncome;
 
@@ -115,6 +118,14 @@ public class Venture {
 
     public void setEmployees(Integer employees) {
         this.employees = employees;
+    }
+
+    public BigDecimal getTotalProduction() {
+        return totalProduction;
+    }
+
+    public void setTotalProduction(BigDecimal totalProduction) {
+        this.totalProduction = totalProduction;
     }
 
     public BigDecimal getMonthlyIncome() {

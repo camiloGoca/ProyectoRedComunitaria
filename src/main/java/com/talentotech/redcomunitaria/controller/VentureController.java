@@ -37,6 +37,13 @@ public class VentureController {
         return ResponseEntity.ok(venture);
     }
 
+    //con este endpoint exponemos la consulta 
+    @GetMapping("/statistics/production")
+     public ResponseEntity<List<Object[]>> getTotalProductionByRegionAndVentureType() {
+    List<Object[]> productionStats = ventureService.getTotalProductionByRegionAndVentureType();
+        return ResponseEntity.ok(productionStats);
+     }
+
     @PutMapping("/{id}")
     public ResponseEntity<Venture> update(@PathVariable Long id, @RequestBody Venture ventureDetails) {
         Venture updatedVenture = ventureService.update(id, ventureDetails);
@@ -50,9 +57,10 @@ public class VentureController {
             @RequestParam(required = false) String region) {
         return ventureService.filterVentures(status, ventureType, region);
     }
+    
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
          ventureService.delete(id);
          return ResponseEntity.noContent().build();
-}
+    }
 }

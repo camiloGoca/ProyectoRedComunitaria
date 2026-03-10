@@ -50,4 +50,10 @@ public class InnovationController {
     public List<Innovation> findByInnovationLevel(@PathVariable String innovationLevel) {
         return innovationService.findByInnovationLevel(innovationLevel);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+         innovationService.delete(id);
+         return ResponseEntity.noContent().build();
+    }
 }
