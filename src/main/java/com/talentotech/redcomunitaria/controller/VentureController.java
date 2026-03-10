@@ -1,7 +1,5 @@
 package com.talentotech.redcomunitaria.controller;
 
-import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import com.talentotech.redcomunitaria.exception.ResourceNotFoundException;
 import com.talentotech.redcomunitaria.model.Venture;
 import com.talentotech.redcomunitaria.service.VentureService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/ventures")
@@ -31,23 +31,28 @@ public class VentureController {
     }
 
     @GetMapping("/{id}")
-    public Venture findById(@PathVariable Long id) {
-        return ventureService.findById(id)
+    public ResponseEntity<Venture> findById(@PathVariable Long id) {
+        Venture venture = ventureService.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Emprendimiento no encontrado con ID: " + id));
+        return ResponseEntity.ok(venture);
     }
 
     @PutMapping("/{id}")
-    public Venture update(@PathVariable Long id, @RequestBody Venture ventureDetails) {
-        return ventureService.update(id, ventureDetails);
+    public ResponseEntity<Venture> update(@PathVariable Long id, @RequestBody Venture ventureDetails) {
+        Venture updatedVenture = ventureService.update(id, ventureDetails);
+        return ResponseEntity.ok(updatedVenture);
     }
 
-    @GetMapping("/status/{status}")
-    public List<Venture> findByStatus(@PathVariable String status) {
-        return ventureService.findByStatus(status);
+    @GetMapping("/filter")
+    public List<Venture> filterVentures(
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String ventureType,
+            @RequestParam(required = false) String region) {
+        return ventureService.filterVentures(status, ventureType, region);
     }
-
-    @GetMapping("/type/{ventureType}")
-    public List<Venture> findByVentureType(@PathVariable String ventureType) {
-        return ventureService.findByVentureType(ventureType);
-    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+         ventureService.delete(id);
+         return ResponseEntity.noContent().build();
+}
 }

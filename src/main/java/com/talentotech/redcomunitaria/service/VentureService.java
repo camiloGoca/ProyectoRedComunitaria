@@ -1,19 +1,19 @@
 package com.talentotech.redcomunitaria.service;
 
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.stereotype.Service;
-
 import com.talentotech.redcomunitaria.exception.ResourceNotFoundException;
+import com.talentotech.redcomunitaria.model.Venture;
 import com.talentotech.redcomunitaria.model.Location;
 import com.talentotech.redcomunitaria.model.Person;
 import com.talentotech.redcomunitaria.model.User;
-import com.talentotech.redcomunitaria.model.Venture;
-import com.talentotech.redcomunitaria.repository.LocationRepository;
-import com.talentotech.redcomunitaria.repository.PersonRepository;
-import com.talentotech.redcomunitaria.repository.UserRepository;
 import com.talentotech.redcomunitaria.repository.VentureRepository;
+import com.talentotech.redcomunitaria.repository.PersonRepository;
+import com.talentotech.redcomunitaria.repository.LocationRepository;
+import com.talentotech.redcomunitaria.repository.UserRepository;
 
 @Service
 public class VentureService {
@@ -52,6 +52,26 @@ public class VentureService {
         venture.setUser(user);
 
         return ventureRepository.save(venture);
+    }
+
+    public List<Venture> filterVentures(String status, String ventureType, String region) {
+        if (status != null && ventureType != null && region != null) {
+            return ventureRepository.findByStatusAndVentureTypeAndLocation_Region(status, ventureType, region);
+        } else if (status != null && ventureType != null) {
+            return ventureRepository.findByStatusAndVentureType(status, ventureType);
+        } else if (status != null && region != null) {
+            return ventureRepository.findByStatusAndLocation_Region(status, region); 
+        } else if (ventureType != null && region != null) {
+            return ventureRepository.findByVentureTypeAndLocation_Region(ventureType, region);
+        } else if (status != null) {
+            return ventureRepository.findByStatus(status);
+        } else if (ventureType != null) {
+            return ventureRepository.findByVentureType(ventureType);
+        } else if (region != null) {
+            return ventureRepository.findByLocation_Region(region);
+        } else {
+            return ventureRepository.findAll();
+        }
     }
 
     public List<Venture> findAll() {
@@ -115,11 +135,9 @@ public class VentureService {
         return ventureRepository.save(venture);
     }
 
-    public List<Venture> findByStatus(String status) {
-        return ventureRepository.findByStatus(status);
-    }
-
-    public List<Venture> findByVentureType(String ventureType) {
-        return ventureRepository.findByVentureType(ventureType);
+    public void delete(Long id) {
+        Venture venture = ventureRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Emprendimiento no encontrado con ID: " + id));
+        ventureRepository.delete(venture);
     }
 }

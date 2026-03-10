@@ -1,5 +1,6 @@
 package com.talentotech.redcomunitaria.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -33,6 +34,10 @@ public class Innovation {
 
     @Column(columnDefinition = "TEXT")
     private String description;
+
+    @Column(name = "total_production")
+    private BigDecimal totalProduction;
+
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "person_id", nullable = false)
@@ -111,6 +116,14 @@ public class Innovation {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+    
+    public BigDecimal getTotalProduction() {
+        return totalProduction;
+    }
+
+    public void setTotalProduction(BigDecimal totalProduction) {
+        this.totalProduction = totalProduction;
     }
 
     public Person getPerson() {
