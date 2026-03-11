@@ -1,0 +1,175 @@
+<div class="users-container">
+  <a routerLink="/dashboard" class="btn btn-back">← Volver al Dashboard</a>
+  
+  <div class="header">
+    <h1>Gestión de Emprendimientos</h1>
+    <div class="header-actions">
+      <button class="btn btn-filter" (click)="toggleFilters()">
+        🔍 {{ showFilters ? 'Ocultar Filtros' : 'Mostrar Filtros' }}
+      </button>
+      <button class="btn btn-primary" (click)="openForm()">+ Nuevo Emprendimiento</button>
+    </div>
+  </div>
+
+  @if (showFilters) {
+    <div class="filters-container">
+      <h3>Filtrar Emprendimientos</h3>
+      <div class="filters-grid">
+        <div class="filter-group">
+          <label for="filterStatus">Estado</label>
+          <select id="filterStatus" [(ngModel)]="filters.status" (change)="applyFilters()">
+            <option value="">Todos</option>
+            @for (status of uniqueStatuses; track status) {
+              <option [value]="status">{{ status }}</option>
+            }
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="filterType">Tipo</label>
+          <select id="filterType" [(ngModel)]="filters.ventureType" (change)="applyFilters()">
+            <option value="">Todos</option>
+            @for (type of uniqueVentureTypes; track type) {
+              <option [value]="type">{{ type }}</option>
+            }
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="filterRegion">Región</label>
+          <select id="filterRegion" [(ngModel)]="filters.region" (change)="applyFilters()">
+            <option value="">Todas</option>
+            @for (region of uniqueRegions; track region) {
+              <option [value]="region">{{ region }}</option>
+            }
+          </select>
+        </div>
+        <div class="filter-actions">
+          <button class="btn btn-secondary" (click)="clearFilters()">Limpiar Filtros</button>
+        </div>
+      </div>
+      <div class="filter-summary">
+        <strong>Resultados:</strong> {{ filteredVentures.length }} emprendimiento(s) encontrado(s)
+      </div>
+    </div>
+  }
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Tipo</th>
+          <th>Sector</th>
+          <th>Estado</th>
+          <th>Región</th>
+          <th>Empleados</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (venture of filteredVentures; track venture.id) {
+          <tr>
+            <td>{{ venture.id }}</td>
+            <td>{{ venture.name }}</td>
+            <td>{{ venture.ventureType }}</td>
+            <td>{{ venture.sector }}</td>
+            <td>
+              <span class="status-badge" [class.status-active]="venture.status === 'Activo'" 
+                    [class.status-inactive]="venture.status === 'Inactivo'">
+                {{ venture.status }}
+              </span>
+            </td>
+            <td>{{ venture.location.region }}</td>
+            <td>{{ venture.employees }}</td>
+            <td>
+              <button class="btn btn-edit" (click)="editVenture(venture)">Editar</button>
+              <button class="btn btn-delete" (click)="deleteVenture(venture.id!)">Eliminar</button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="8" class="no-results">No se encontraron emprendimientos con los filtros seleccionados</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  @if (showForm) {
+    <div class="form-modal" (click)="closeForm()">
+      <div class="form-content" (click)="$event.stopPropagation()">
+        <h2>{{ isEditing ? 'Editar Emprendimiento' : 'Nuevo Emprendimiento' }}</h2>
+        <form (ngSubmit)="saveVenture()">
+          <div class="form-group">
+            <label for="name">Nombre</label>
+            <input type="text" id="name" [(ngModel)]="currentVenture.name" name="name" required />
+          </div>
+          <div class="form-group">
+            <label for="ventureType">Tipo</label>
+            <input type="text" id="ventureType" [(ngModel)]="currentVenture.ventureType" name="ventureType" required />
+          </div>
+          <div class="form-group">
+            <label for="sector">Sector</label>
+            <input type="text" id="sector" [(ngModel)]="currentVenture.sector" name="sector" />
+          </div>
+          <div class="form-group">
+            <label for="startDate">Fecha de Inicio</label>
+            <input type="date" id="startDate" [(ngModel)]="currentVenture.startDate" name="startDate" />
+          </div>
+          <div class="form-group">
+            <label for="status">Estado</label>
+            <select id="status" [(ngModel)]="currentVenture.status" name="status">
+              <option value="">Seleccionar...</option>
+              <option value="Activo">Activo</option>
+              <option value="Inactivo">Inactivo</option>
+              <option value="En Desarrollo">En Desarrollo</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="employees">Empleados</label>
+            <input type="number" id="employees" [(ngModel)]="currentVenture.employees" name="employees" />
+          </div>
+          <div class="form-group">
+            <label for="totalProduction">Producción Total</label>
+            <input type="number" id="totalProduction" [(ngModel)]="currentVenture.totalProduction" name="totalProduction" />
+          </div>
+          <div class="form-group">
+            <label for="monthlyIncome">Ingreso Mensual</label>
+            <input type="number" id="monthlyIncome" [(ngModel)]="currentVenture.monthlyIncome" name="monthlyIncome" />
+          </div>
+          <div class="form-group">
+            <label for="personId">Persona</label>
+            <select id="personId" [(ngModel)]="currentVenture.person.id" name="personId" required>
+              <option [value]="null">Seleccionar...</option>
+              @for (person of persons; track person.id) {
+                <option [value]="person.id">{{ person.firstName }} {{ person.lastName }}</option>
+              }
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="locationId">Ubicación</label>
+            <select id="locationId" [(ngModel)]="currentVenture.location.id" name="locationId" required>
+              <option [value]="null">Seleccionar...</option>
+              @for (location of locations; track location.id) {
+                <option [value]="location.id">{{ location.city }}, {{ location.region }}</option>
+              }
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="userId">Usuario</label>
+            <select id="userId" [(ngModel)]="currentVenture.user.id" name="userId" required>
+              <option [value]="null">Seleccionar...</option>
+              @for (user of users; track user.id) {
+                <option [value]="user.id">{{ user.username }}</option>
+              }
+            </select>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" (click)="closeForm()">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+</div>

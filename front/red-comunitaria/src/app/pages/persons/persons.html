@@ -1,0 +1,96 @@
+<div class="users-container">
+  <a routerLink="/dashboard" class="btn btn-back">← Volver al Dashboard</a>
+  
+  <div class="header">
+    <h1>Gestión de Personas</h1>
+    <button class="btn btn-primary" (click)="openForm()">+ Nueva Persona</button>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Género</th>
+          <th>Nivel Educativo</th>
+          <th>Ubicación</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (person of persons; track person.id) {
+          <tr>
+            <td>{{ person.id }}</td>
+            <td>{{ person.firstName }}</td>
+            <td>{{ person.lastName }}</td>
+            <td>{{ person.gender }}</td>
+            <td>{{ person.educationLevel }}</td>
+            <td>{{ person.location.city }}, {{ person.location.region }}</td>
+            <td>
+              <button class="btn btn-edit" (click)="editPerson(person)">Editar</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  @if (showForm) {
+    <div class="form-modal" (click)="closeForm()">
+      <div class="form-content" (click)="$event.stopPropagation()">
+        <h2>{{ isEditing ? 'Editar Persona' : 'Nueva Persona' }}</h2>
+        <form (ngSubmit)="savePerson()">
+          <div class="form-group">
+            <label for="firstName">Nombre</label>
+            <input type="text" id="firstName" [(ngModel)]="currentPerson.firstName" name="firstName" required />
+          </div>
+          <div class="form-group">
+            <label for="lastName">Apellido</label>
+            <input type="text" id="lastName" [(ngModel)]="currentPerson.lastName" name="lastName" required />
+          </div>
+          <div class="form-group">
+            <label for="birthDate">Fecha de Nacimiento</label>
+            <input type="date" id="birthDate" [(ngModel)]="currentPerson.birthDate" name="birthDate" />
+          </div>
+          <div class="form-group">
+            <label for="gender">Género</label>
+            <select id="gender" [(ngModel)]="currentPerson.gender" name="gender">
+              <option value="">Seleccionar...</option>
+              <option value="Masculino">Masculino</option>
+              <option value="Femenino">Femenino</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="educationLevel">Nivel Educativo</label>
+            <input type="text" id="educationLevel" [(ngModel)]="currentPerson.educationLevel" name="educationLevel" />
+          </div>
+          <div class="form-group">
+            <label for="locationId">Ubicación</label>
+            <select id="locationId" [(ngModel)]="currentPerson.location.id" name="locationId" required>
+              <option [value]="null">Seleccionar...</option>
+              @for (location of locations; track location.id) {
+                <option [value]="location.id">{{ location.city }}, {{ location.region }}, {{ location.country }}</option>
+              }
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="userId">Usuario</label>
+            <select id="userId" [(ngModel)]="currentPerson.user.id" name="userId" required>
+              <option [value]="null">Seleccionar...</option>
+              @for (user of users; track user.id) {
+                <option [value]="user.id">{{ user.username }}</option>
+              }
+            </select>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" (click)="closeForm()">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+</div>

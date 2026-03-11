@@ -1,0 +1,95 @@
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 250px;
+  background: #2c3e50;
+  color: white;
+  padding: 1rem;
+}
+
+.sidebar-header h2 {
+  margin: 0 0 2rem 0;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background 0.3s;
+}
+
+.nav-item:hover {
+  background: #34495e;
+}
+
+.nav-item.active {
+  background: #3498db;
+}
+
+.icon {
+  font-size: 1.25rem;
+}
+
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  background: #ecf0f1;
+}
+
+.welcome-section h1 {
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.welcome-section p {
+  color: #7f8c8d;
+  margin-bottom: 2rem;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.dashboard-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  text-align: center;
+  text-decoration: none;
+  color: #2c3e50;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.dashboard-card h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}

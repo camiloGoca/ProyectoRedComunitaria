@@ -22,7 +22,9 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/users/**").permitAll()
+                .requestMatchers("/api/users/{id}").permitAll()
+                .requestMatchers("/api/users").permitAll()
+                .requestMatchers("/api/users/login").permitAll()
                 .requestMatchers("/api/locations/**").permitAll()
                 .requestMatchers("/api/persons/**").permitAll()
                 .requestMatchers("/api/ventures/**").permitAll()

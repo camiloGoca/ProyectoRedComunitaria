@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import com.talentotech.redcomunitaria.exception.ResourceNotFoundException;
 import com.talentotech.redcomunitaria.model.Person;
 import com.talentotech.redcomunitaria.service.PersonService;
+import org.springframework.web.bind.annotation.CrossOrigin;
+
+@CrossOrigin(origins = "http://localhost:4200")
 
 @RestController
 @RequestMapping("/api/persons")

@@ -1,0 +1,31 @@
+<div class="login-container">
+  <div class="login-card">
+    <h2>Red Comunitaria</h2>
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="username">Usuario</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          [(ngModel)]="loginData.username"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          [(ngModel)]="loginData.password"
+          required
+        />
+      </div>
+      @if (errorMessage) {
+        <div class="error-message">{{ errorMessage }}</div>
+      }
+      <button type="submit" class="btn-primary">Iniciar Sesión</button>
+    </form>
+  </div>
+</div>

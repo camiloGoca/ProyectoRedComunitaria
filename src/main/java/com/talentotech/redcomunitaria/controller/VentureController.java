@@ -9,6 +9,9 @@ import com.talentotech.redcomunitaria.model.Venture;
 import com.talentotech.redcomunitaria.service.VentureService;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.CrossOrigin;
+
+@CrossOrigin(origins = "http://localhost:4200")
 
 @RestController
 @RequestMapping("/api/ventures")

@@ -1,0 +1,105 @@
+<div class="users-container">
+  <a routerLink="/dashboard" class="btn btn-back">← Volver al Dashboard</a>
+  
+  <div class="header">
+    <h1>Gestión de Innovaciones</h1>
+    <button class="btn btn-primary" (click)="openForm()">+ Nueva Innovación</button>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Tipo</th>
+          <th>Nivel</th>
+          <th>Impacto</th>
+          <th>Descripción</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (innovation of innovations; track innovation.id) {
+          <tr>
+            <td>{{ innovation.id }}</td>
+            <td>{{ innovation.name }}</td>
+            <td>{{ innovation.innovationType }}</td>
+            <td>{{ innovation.innovationLevel }}</td>
+            <td>{{ innovation.impactScore }}</td>
+            <td>{{ innovation.description }}</td>
+            <td>
+              <button class="btn btn-edit" (click)="editInnovation(innovation)">Editar</button>
+              <button class="btn btn-delete" (click)="deleteInnovation(innovation.id!)">Eliminar</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  @if (showForm) {
+    <div class="form-modal" (click)="closeForm()">
+      <div class="form-content" (click)="$event.stopPropagation()">
+        <h2>{{ isEditing ? 'Editar Innovación' : 'Nueva Innovación' }}</h2>
+        <form (ngSubmit)="saveInnovation()">
+          <div class="form-group">
+            <label for="name">Nombre</label>
+            <input type="text" id="name" [(ngModel)]="currentInnovation.name" name="name" required />
+          </div>
+          <div class="form-group">
+            <label for="innovationType">Tipo</label>
+            <input type="text" id="innovationType" [(ngModel)]="currentInnovation.innovationType" name="innovationType" required />
+          </div>
+          <div class="form-group">
+            <label for="innovationLevel">Nivel</label>
+            <input type="text" id="innovationLevel" [(ngModel)]="currentInnovation.innovationLevel" name="innovationLevel" required />
+          </div>
+          <div class="form-group">
+            <label for="innovationDate">Fecha</label>
+            <input type="date" id="innovationDate" [(ngModel)]="currentInnovation.innovationDate" name="innovationDate" />
+          </div>
+          <div class="form-group">
+            <label for="impactScore">Puntuación de Impacto</label>
+            <input type="number" id="impactScore" [(ngModel)]="currentInnovation.impactScore" name="impactScore" />
+          </div>
+          <div class="form-group">
+            <label for="description">Descripción</label>
+            <input type="text" id="description" [(ngModel)]="currentInnovation.description" name="description" />
+          </div>
+          <div class="form-group">
+            <label for="personId">Persona</label>
+            <select id="personId" [(ngModel)]="currentInnovation.person.id" name="personId" required>
+              <option [value]="null">Seleccionar...</option>
+              @for (person of persons; track person.id) {
+                <option [value]="person.id">{{ person.firstName }} {{ person.lastName }}</option>
+              }
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="locationId">Ubicación</label>
+            <select id="locationId" [(ngModel)]="currentInnovation.location.id" name="locationId" required>
+              <option [value]="null">Seleccionar...</option>
+              @for (location of locations; track location.id) {
+                <option [value]="location.id">{{ location.city }}, {{ location.region }}</option>
+              }
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="userId">Usuario</label>
+            <select id="userId" [(ngModel)]="currentInnovation.user.id" name="userId" required>
+              <option [value]="null">Seleccionar...</option>
+              @for (user of users; track user.id) {
+                <option [value]="user.id">{{ user.username }}</option>
+              }
+            </select>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" (click)="closeForm()">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,130 @@
+<div class="reports-container">
+  <a routerLink="/dashboard" class="btn-back">← Volver al Dashboard</a>
+  
+  <div class="header">
+    <h1>📊 Reportes y Estadísticas</h1>
+    <p class="subtitle">Análisis visual de emprendimientos e innovaciones</p>
+  </div>
+
+  @if (loading) {
+    <div class="loading">
+      <div class="spinner"></div>
+      <p>Cargando reportes...</p>
+    </div>
+  } @else {
+    <div class="reports-grid">
+      <!-- Gráfico de Barras: Top Países -->
+      <div class="report-card chart-card">
+        <h2>🌍 Top Países por Emprendimientos</h2>
+        @if (topCountries.length > 0) {
+          <div class="bar-chart">
+            @for (country of topCountries; track $index) {
+              <div class="bar-item">
+                <div class="bar-label">{{ country.label }}</div>
+                <div class="bar-container">
+                  <div class="bar-fill" [style.width]="country.percentage + '%'">
+                    <span class="bar-value">{{ country.value }}</span>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        } @else {
+          <div class="no-data">No hay datos disponibles</div>
+        }
+      </div>
+
+      <!-- Gráfico de Dona: Porcentaje por Región -->
+      <div class="report-card chart-card">
+        <h2>📍 Distribución por Región</h2>
+        @if (venturePercentages.length > 0) {
+          <div class="donut-chart-container">
+            <div class="donut-chart">
+              @for (region of venturePercentages; track $index) {
+                <div class="donut-segment" 
+                     [style.--percentage]="region.percentage"
+                     [style.--color]="'hsl(' + ($index * 360 / venturePercentages.length) + ', 70%, 60%)'">
+                </div>
+              }
+            </div>
+            <div class="donut-legend">
+              @for (region of venturePercentages; track $index) {
+                <div class="legend-item">
+                  <span class="legend-color" 
+                        [style.background]="'hsl(' + ($index * 360 / venturePercentages.length) + ', 70%, 60%)'">
+                  </span>
+                  <span class="legend-label">{{ region.label }}</span>
+                  <span class="legend-value">{{ region.value | number:'1.1-1' }}%</span>
+                </div>
+              }
+            </div>
+          </div>
+        } @else {
+          <div class="no-data">No hay datos disponibles</div>
+        }
+      </div>
+
+      <!-- Tabla: Producción por Región y Tipo -->
+      <div class="report-card full-width">
+        <h2>📈 Producción Total por Región y Tipo</h2>
+        @if (productionStats.length > 0) {
+          <div class="table-wrapper">
+            <table class="report-table">
+              <thead>
+                <tr>
+                  <th>Región</th>
+                  <th>Tipo de Emprendimiento</th>
+                  <th>Producción Total</th>
+                  <th>Visualización</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (stat of productionStats; track $index) {
+                  <tr>
+                    <td><strong>{{ stat[0] }}</strong></td>
+                    <td>{{ stat[1] }}</td>
+                    <td class="number-cell">{{ stat[2] | number:'1.2-2' }}</td>
+                    <td>
+                      <div class="mini-bar">
+                        <div class="mini-bar-fill" 
+                             [style.width]="(stat[2] / productionStats[0][2] * 100) + '%'">
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        } @else {
+          <div class="no-data">No hay datos disponibles</div>
+        }
+      </div>
+
+      <!-- Tarjetas de Resumen -->
+      <div class="summary-cards">
+        <div class="summary-card">
+          <div class="summary-icon">🏢</div>
+          <div class="summary-content">
+            <h3>Total Emprendimientos</h3>
+            <p class="summary-number">{{ topCountries.reduce((sum, c) => sum + c.value, 0) }}</p>
+          </div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-icon">🌎</div>
+          <div class="summary-content">
+            <h3>Países Activos</h3>
+            <p class="summary-number">{{ topCountries.length }}</p>
+          </div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-icon">📊</div>
+          <div class="summary-content">
+            <h3>Regiones</h3>
+            <p class="summary-number">{{ venturePercentages.length }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>
