@@ -54,7 +54,8 @@
                         [style.background]="'hsl(' + ($index * 360 / venturePercentages.length) + ', 70%, 60%)'">
                   </span>
                   <span class="legend-label">{{ region.label }}</span>
-                  <span class="legend-value">{{ region.value | number:'1.1-1' }}%</span>
+                  <span class="legend-count">({{ region.count }} emprendimientos)</span>
+                  <span class="legend-value">{{ region.value | number:'1.2-2' }}%</span>
                 </div>
               }
             </div>
@@ -107,7 +108,7 @@
           <div class="summary-icon">🏢</div>
           <div class="summary-content">
             <h3>Total Emprendimientos</h3>
-            <p class="summary-number">{{ topCountries.reduce((sum, c) => sum + c.value, 0) }}</p>
+            <p class="summary-number">{{ venturePercentages.reduce((sum, r) => sum + r.count, 0) }}</p>
           </div>
         </div>
         <div class="summary-card">

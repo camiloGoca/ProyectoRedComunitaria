@@ -5,6 +5,7 @@ import { VentureService } from '../../services/venture.service';
 
 interface ChartData {
   label: string;
+  count: number;
   value: number;
   percentage?: number;
 }
@@ -52,10 +53,12 @@ export class ReportsComponent implements OnInit {
 
     this.ventureService.getVenturePercentageByRegion().subscribe({
       next: (data) => {
+        // data viene como: [region, cantidad, porcentaje]
         this.venturePercentages = data.map(item => ({
-          label: item[0],
-          value: item[1],
-          percentage: item[1]
+          label: item[0],      // región
+          count: item[1],      // cantidad de emprendimientos
+          value: item[2],      // porcentaje real del backend
+          percentage: item[2]  // porcentaje para el gráfico
         }));
         checkComplete();
       },
@@ -70,6 +73,7 @@ export class ReportsComponent implements OnInit {
         const maxValue = Math.max(...data.map(item => item[1]));
         this.topCountries = data.map(item => ({
           label: item[0],
+          count: item[1],
           value: item[1],
           percentage: (item[1] / maxValue) * 100
         }));

@@ -188,9 +188,17 @@
   color: #2c3e50;
 }
 
+.legend-count {
+  font-size: 0.85rem;
+  color: #7f8c8d;
+  margin-right: 0.5rem;
+}
+
 .legend-value {
   font-weight: bold;
   color: #3498db;
+  min-width: 60px;
+  text-align: right;
 }
 
 /* Tabla con mini barras */
